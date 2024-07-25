@@ -13,7 +13,10 @@ export const getRetreats = async (searchParams: {
   const url = `${API_URL}?${
     searchParams.page ? "" : "page=1"
   }&limit=${RETREATS_LIMIT}${queryParams ? `&${queryParams}` : ""}`;
-  const { data } = await axios.get(url);
-
-  return data;
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    return [];
+  }
 };

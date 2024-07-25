@@ -12,6 +12,7 @@ import {
 import { Button } from "./ui/button";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
+import qs from "query-string";
 
 const FilterSection = () => {
   const router = useRouter();
@@ -21,7 +22,19 @@ const FilterSection = () => {
   useEffect(() => {
     const debounceFn = setTimeout(() => {
       if (title) {
-        router.push(`/?title=${title}`);
+        const url = qs.stringifyUrl(
+          {
+            url: "/",
+            query: {
+              title,
+              location: searchParams.get("location"),
+              type: searchParams.get("type"),
+              page: searchParams.get("page"),
+            },
+          },
+          { skipEmptyString: true, skipNull: true }
+        );
+        router.push(url);
       } else {
         router.push("/");
       }
@@ -50,23 +63,19 @@ const FilterSection = () => {
               <DropdownMenuItem
                 key={type.label}
                 onSelect={() => {
-                  if (searchParams.get("type")) {
-                    if (parseInt(searchParams.get("page")!) > 1) {
-                      router.push(
-                        `/?location=${type.label}&type=${searchParams.get(
-                          "type"
-                        )}&page=${searchParams.get("page")}`
-                      );
-                    } else {
-                      router.push(
-                        `/?location=${type.label}&type=${searchParams.get(
-                          "type"
-                        )}`
-                      );
-                    }
-                  } else {
-                    router.push(`/?location=${type.label}`);
-                  }
+                  const url = qs.stringifyUrl(
+                    {
+                      url: "/",
+                      query: {
+                        title,
+                        location: type.label,
+                        type: searchParams.get("type"),
+                        page: searchParams.get("page"),
+                      },
+                    },
+                    { skipEmptyString: true, skipNull: true }
+                  );
+                  router.push(url);
                 }}
                 className="cursor-pointer"
               >
@@ -92,23 +101,19 @@ const FilterSection = () => {
               <DropdownMenuItem
                 key={type.label}
                 onSelect={() => {
-                  if (searchParams.get("location")) {
-                    if (searchParams.get("page")) {
-                      router.push(
-                        `/?type=${type.label}&location=${searchParams.get(
-                          "location"
-                        )}&page=${searchParams.get("page")}`
-                      );
-                    } else {
-                      router.push(
-                        `/?type=${type.label}&location=${searchParams.get(
-                          "location"
-                        )}`
-                      );
-                    }
-                  } else {
-                    router.push(`/?type=${type.label}`);
-                  }
+                  const url = qs.stringifyUrl(
+                    {
+                      url: "/",
+                      query: {
+                        title,
+                        location: searchParams.get("location"),
+                        type: type.label,
+                        page: searchParams.get("page"),
+                      },
+                    },
+                    { skipEmptyString: true, skipNull: true }
+                  );
+                  router.push(url);
                 }}
                 className="cursor-pointer"
               >

@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "./ui/button";
+import qs from "query-string";
 
 const Pagination = ({ hasNext }: { hasNext: boolean }) => {
   const searchParams = useSearchParams();
@@ -15,35 +16,32 @@ const Pagination = ({ hasNext }: { hasNext: boolean }) => {
         onClick={() => {
           const page = searchParams.get("page");
           if (page && parseInt(page) > 2) {
-            if (searchParams.get("location")) {
-              if (searchParams.get("type")) {
-                router.push(
-                  `/?page=${parseInt(page) - 1}&location=${searchParams.get(
-                    "location"
-                  )}&type=${searchParams.get("type")}`
-                );
-              } else {
-                router.push(
-                  `/?page=${parseInt(page) - 1}&location=${searchParams.get(
-                    "location"
-                  )}`
-                );
-              }
-            }
+            const url = qs.stringifyUrl(
+              {
+                url: "/",
+                query: {
+                  page: parseInt(page) - 1,
+                  location: searchParams.get("location"),
+                  type: searchParams.get("type"),
+                  title: searchParams.get("title"),
+                },
+              },
+              { skipEmptyString: true, skipNull: true }
+            );
+            router.push(url);
           } else {
-            if (searchParams.get("location")) {
-              if (searchParams.get("type")) {
-                router.push(
-                  `/?location=${searchParams.get(
-                    "location"
-                  )}&type=${searchParams.get("type")}`
-                );
-              } else {
-                router.push(`/?location=${searchParams.get("location")}`);
-              }
-            } else {
-              router.push("/");
-            }
+            const url = qs.stringifyUrl(
+              {
+                url: "/",
+                query: {
+                  location: searchParams.get("location"),
+                  type: searchParams.get("type"),
+                  title: searchParams.get("title"),
+                },
+              },
+              { skipEmptyString: true, skipNull: true }
+            );
+            router.push(url);
           }
         }}
       >
@@ -54,41 +52,19 @@ const Pagination = ({ hasNext }: { hasNext: boolean }) => {
         className="bg-blue-950 text-white hover:!bg-blue-950 hover:!text-white"
         onClick={() => {
           const page = searchParams.get("page");
-          if (page) {
-            if (searchParams.get("location")) {
-              if (searchParams.get("type")) {
-                router.push(
-                  `/?page=${
-                    parseInt(page ? page : "1") + 1
-                  }&location=${searchParams.get(
-                    "location"
-                  )}&type=${searchParams.get("type")}`
-                );
-              } else {
-                router.push(
-                  `/?page=${
-                    parseInt(page ? page : "1") + 1
-                  }&location=${searchParams.get("location")}`
-                );
-              }
-            }
-          } else {
-            if (searchParams.get("location")) {
-              if (searchParams.get("type")) {
-                router.push(
-                  `/?page=2&location=${searchParams.get(
-                    "location"
-                  )}&type=${searchParams.get("type")}`
-                );
-              } else {
-                router.push(
-                  `/?page=2&location=${searchParams.get("location")}`
-                );
-              }
-            } else {
-              router.push("/?page=2");
-            }
-          }
+          const url = qs.stringifyUrl(
+            {
+              url: "/",
+              query: {
+                page: page ? parseInt(page) + 1 : 2,
+                location: searchParams.get("location"),
+                type: searchParams.get("type"),
+                title: searchParams.get("title"),
+              },
+            },
+            { skipEmptyString: true, skipNull: true }
+          );
+          router.push(url);
         }}
       >
         Next

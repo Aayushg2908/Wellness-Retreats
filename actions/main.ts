@@ -9,6 +9,7 @@ export const getRetreats = async (searchParams: {
   type: string;
   page: string;
 }) => {
+  // Logic for creating the query string
   const queryParams = new URLSearchParams(searchParams).toString();
   const url = `${API_URL}?${
     searchParams.page ? "" : "page=1"
@@ -17,6 +18,7 @@ export const getRetreats = async (searchParams: {
     const response = await axios.get(url);
     return response.data;
   } catch (error) {
+    // If there is an error, return an empty array
     return [];
   }
 };

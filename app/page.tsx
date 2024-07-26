@@ -18,6 +18,7 @@ export default async function Home({
 
   return (
     <main className="p-5">
+      {/* Banner section */}
       <section className="w-full h-[400px] bg-stone-300 rounded-lg p-4 shadow-md flex flex-col">
         <img
           src="https://cdn.midjourney.com/a287f9bc-d0fb-4e78-a0fa-e8136d3c408a/0_0.jpeg"
@@ -29,12 +30,18 @@ export default async function Home({
           A weekend retreat focused on yoga and meditation to relieve stress.
         </span>
       </section>
+
+      {/* Filter section */}
       <FilterSection />
+
+      {/* All Retreats */}
       <div className="mt-6 w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {data.map((retreat: RetreatType) => (
           <RetreatCard retreat={retreat} key={retreat.id} />
         ))}
       </div>
+
+      {/* Pagination section */}
       <Pagination hasNext={data.length === 3} />
     </main>
   );

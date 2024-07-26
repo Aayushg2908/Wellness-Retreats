@@ -15,6 +15,7 @@ const Pagination = ({ hasNext }: { hasNext: boolean }) => {
         className="bg-blue-950 text-white hover:!bg-blue-950 hover:!text-white"
         onClick={() => {
           const page = searchParams.get("page");
+          // if page is greater than 2, then only subtract 1 from the page number otherwise redirect to the home page.
           if (page && parseInt(page) > 2) {
             const url = qs.stringifyUrl(
               {
@@ -56,6 +57,7 @@ const Pagination = ({ hasNext }: { hasNext: boolean }) => {
             {
               url: "/",
               query: {
+                // if page is not present, then set it to 2 otherwise increment the page number by 1.
                 page: page ? parseInt(page) + 1 : 2,
                 location: searchParams.get("location"),
                 type: searchParams.get("type"),

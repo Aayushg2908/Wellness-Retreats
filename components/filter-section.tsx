@@ -20,8 +20,12 @@ const FilterSection = () => {
   const [title, setTitle] = useState("");
 
   useEffect(() => {
+    // Debounce the search query to avoid making too many requests
+    // Debouncing is a technique used to limit the rate at which a function is called. It ensures that a function is not called again until a certain amount of time has passed since the last invocation. This can be useful in scenarios where a function is called frequently, such as in response to user input, and you want to avoid excessive calls that could impact performance.
+
     const debounceFn = setTimeout(() => {
       if (title) {
+        // query-string library is used to create the query string on the bases of the search parameters
         const url = qs.stringifyUrl(
           {
             url: "/",
